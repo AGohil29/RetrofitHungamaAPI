@@ -2,6 +2,7 @@ package com.example.arunr.retrofithungamaapi.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,12 +33,17 @@ public class MainActivity extends AppCompatActivity {
         final RecyclerView recyclerView = findViewById(R.id.movies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Decorate the items using various decorators
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         retrofit2.Call<MovieResponse> call = apiService.getMovieDetails(Url);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                // Accessing the appropriate array class in the Json file
                 List<Movie> movies = response.body().getNode().getData();
                 recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
 //                Log.d(TAG, "Number of movies received: " + movies.size());
