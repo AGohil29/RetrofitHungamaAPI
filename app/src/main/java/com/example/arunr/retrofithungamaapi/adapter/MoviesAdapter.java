@@ -68,7 +68,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 .load(movies.get(position).getImages().get(0).getImage())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.imageView);
-        // Log.i(TAG, "Url of Image: " + getImageUrl(movies.get(position).getImages()));
+         Log.i(TAG, "Url of Image: " + movies.get(position).getImages().get(0).getImage());
     }
     // Checks whether the array is null
     /* public String getImageUrl(ArrayList<Images> list) {
