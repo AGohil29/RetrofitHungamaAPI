@@ -1,6 +1,7 @@
 package com.example.arunr.retrofithungamaapi.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -61,62 +62,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, t.toString());
             }
         });
-
-        // Responds to the touch on each item in the Recycler View.
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position){
-                Movie movie = movies.get(position);
-                Toast.makeText(getApplicationContext(), movie.getName() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position){
-
-            }
-        }));
-    }
-
-    public interface ClickListener {
-        void onClick(View view, int position);
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
-
-        private GestureDetector gestureDetector;
-        private MainActivity.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final MainActivity.ClickListener clickListener){
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
-                @Override
-                public boolean onSingleTapUp(MotionEvent event){
-                    return true;
-                }
-                @Override
-                public void onLongPress(MotionEvent event){
-                    View child = recyclerView.findChildViewUnder(event.getX(), event.getY());
-                    if (child != null && clickListener != null){
-                        clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent event){
-            View child = recyclerView.findChildViewUnder(event.getX(), event.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(event)){
-                clickListener.onClick(child, recyclerView.getChildAdapterPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView recyclerView, MotionEvent event){}
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept){}
     }
 }

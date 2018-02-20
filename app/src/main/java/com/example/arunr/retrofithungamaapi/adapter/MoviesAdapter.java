@@ -1,6 +1,7 @@
 package com.example.arunr.retrofithungamaapi.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arunr.retrofithungamaapi.R;
+import com.example.arunr.retrofithungamaapi.activity.MovieDetails;
 import com.example.arunr.retrofithungamaapi.model.Images;
 import com.example.arunr.retrofithungamaapi.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -29,7 +32,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private int rowLayout;
     private Context context;
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
         LinearLayout moviesLayout;
         ImageView imageView;
         TextView movieTitle;
@@ -43,6 +46,25 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             movieTitle = view.findViewById(R.id.title);
             movieLanguage = view.findViewById(R.id.language);
             movieGenre = view.findViewById(R.id.genre);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION){
+                        Movie clickedDataItem = movies.get(pos);
+                        Intent intent = new Intent(context, MovieDetails.class);
+                        intent.putExtra("name", movies.get(pos).getName());
+                        intent.putExtra("image", movies.get(pos).getImages().get(0).getImage());
+                        intent.putExtra("genre", movies.get(pos).getGenre());
+                        intent.putExtra("lang", movies.get(pos).getLang());
+                        intent.putExtra("duration", movies.get(pos).getDuration().toString());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
         }
     }
@@ -62,8 +84,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
         holder.movieTitle.setText(movies.get(position).getName());
-        holder.movieLanguage.setText(movies.get(position).getLang());
-        holder.movieGenre.setText(movies.get(position).getGenre());
         Picasso.with(context)
                 .load(movies.get(position).getImages().get(0).getImage())
                 .placeholder(R.mipmap.ic_launcher)
