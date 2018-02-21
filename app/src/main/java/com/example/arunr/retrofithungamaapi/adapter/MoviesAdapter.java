@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.arunr.retrofithungamaapi.R;
 import com.example.arunr.retrofithungamaapi.activity.MovieDetails;
 import com.example.arunr.retrofithungamaapi.model.Images;
@@ -84,7 +85,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
         holder.movieTitle.setText(movies.get(position).getName());
-        Picasso.with(context)
+        Glide.with(context)
                 .load(movies.get(position).getImages().get(0).getImage())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.imageView);

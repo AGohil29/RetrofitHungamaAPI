@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.arunr.retrofithungamaapi.R;
 import com.example.arunr.retrofithungamaapi.adapter.MoviesAdapter;
 import com.example.arunr.retrofithungamaapi.model.Movie;
@@ -13,6 +15,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by arun.r on 19-02-2018.
@@ -44,8 +50,13 @@ public class MovieDetails extends AppCompatActivity {
             String lang = getIntent().getExtras().getString("lang");
             String duration = getIntent().getExtras().getString("duration");
 
-            Picasso.with(this)
+            Glide.with(this)
                     .load(moviePoster)
+                    // for rounded corners
+                    .bitmapTransform(new RoundedCornersTransformation(this, 20, 0))
+                    // for circle crop
+                    //.bitmapTransform(new CropCircleTransformation(this))
+                    //.fitCenter() // Scale to fit entire image within imageview
                     .placeholder(R.mipmap.ic_launcher)
                     .into(imageMovieDetails);
             movieTitle.setText(movieName);
